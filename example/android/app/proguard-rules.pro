@@ -1,0 +1,5 @@
+-keep class com.lib.flutter_blue_plus.* { *; }
+-keep public class de.IPinpointPositionListener$Stub.** { *; }
+-keep public class de.IPinpointPositionListener.** { *; }
+-keep public class de.pinpoint.ServiceTest.** { *; }
+-ignorewarnings
