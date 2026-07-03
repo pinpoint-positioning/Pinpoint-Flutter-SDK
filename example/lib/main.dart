@@ -115,7 +115,7 @@ class _ExampleState extends State<Example> {
           children: [
             Image.asset('assets/Pin-Round-Orange@128px.png', height: 32),
             const SizedBox(width: 10),
-            const Text("Pinpoint Flutter SDK Example"),
+            const Text("Pinpoint Flutter SDK Example 15.0.1"),
           ],
         ),
       ),

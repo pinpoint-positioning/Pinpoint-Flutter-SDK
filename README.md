@@ -99,7 +99,7 @@ To be able to import the `pinpoint_sdk` package in your Flutter application, add
 ```yaml
 pinpoint_sdk: 
     hosted: https://posie.pinpoint.de:8073/repository/flutter_sdk_release
-    version: 15.0.0+2
+    version: 15.0.1+3
 ```
 
 
