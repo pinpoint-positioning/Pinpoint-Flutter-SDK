@@ -7,15 +7,20 @@
 
 * [Getting Started](#getting-started)
 
-    * [Requirements](#requirements)
 
     * [Supported Platforms](#supported-platforms)
 
+    * [Requirements](#requirements)
+
     * [Setup Environment](#setup-environment)
+        
+        *  [Add Credentials for SDK Repository](#add-credentials-for-sdk-repository)
 
-        * [Android](#android)
+            * [Android](#android)
 
-        * [iOS](#ios)
+            * [iOS](#ios)
+
+        *  [Platform specific requirements](#platform-specific-requirements)
 
 * [Usage](#usage)
 
@@ -25,11 +30,13 @@
 
     * [API](#api)
 
+        * [Initialize Geolocator](#initialize-geolocator)
+
         * [Geolocation](#geolocation)
+        
+            * [Last known location](#last-known-location)
 
             * [Current location](#current-location)
-
-            * [Last known location](#last-known-location)
 
             * [Listen to location updates](#listen-to-location-updates)
 
@@ -41,9 +48,10 @@
 
                 * [Platform specific location settings (Outdoor positioning only)](#platform-specific-location-settings-outdoor-positioning-only)
 
-            * [Location accuracy for outdoor positions (Android and iOS 14+ only)](#location-accuracy-for-outdoor-positions-android-and-ios-14-only)
+            * [Location accuracy for outdoor positions](#location-accuracy-for-outdoor-positions)
 
-            * [Service status updates](#service-status-updates)
+            * [Service status](#service-status)
+      
 
       * [Permissions](#permissions)
 
@@ -51,12 +59,12 @@
 
       * [Utility methods](#utility-methods)
 
+      * [Logging](#logging)
+
 
 * [Troubleshooting](#troubleshooting)
   
     * ["I do not get any positions"](#i-do-not-get-any-positions)
-  
-    * [Android: `Geolocator.checkPermission` always returns `LocationPermission.denied`](#android-geolocatorcheckpermission-always-returns-locationpermissiondenied)
 
 * [License](#license)
 
@@ -82,7 +90,7 @@ Refer to the example app for an easy integration of the Pinpoint Flutter SDK.
 
 ### Supported Platforms
 - Android (minimum Android 10, API level 29)
-- iOS (minimum iOS 27 beta)
+- iOS (minimum iOS 27)
 
 ### Requirements
 - Flutter (minimum version: 3.44.0)
@@ -99,7 +107,7 @@ To be able to import the `pinpoint_sdk` package in your Flutter application, add
 ```yaml
 pinpoint_sdk: 
     hosted: https://posie.pinpoint.de:8073/repository/flutter_sdk_release
-    version: 15.0.1+3
+    version: 15.0.5+5
 ```
 
 
@@ -267,9 +275,7 @@ If your app needs to start the positioning service while running in the backgrou
 <details>
 <summary>iOS</summary>
 
-Until iOS 27 is officially released, building for iOS 27 requires using Xcode beta. In this case, ensure that the command line tools are configured to use Xcode beta.
-
-On iOS you'll need to add the following entry to your Info.plist file (located under ios/Runner) in order to access the device's location. Simply open your Info.plist file and add the following (make sure you update the description so it is meaningful in the context of your App):
+On iOS you'll need to add the following entry to your Info.plist file (located under ios/Runner) in order to access the device's location. Simply open your Info.plist file and add the following (make sure to update the description so that it is meaningful in the context of your App):
 
 ``` xml
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -289,7 +295,7 @@ post_install do |installer|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)', 'PERMISSION_BLUETOOTH=1',]
       config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
-    end
+    end    
     if target.name == "geolocator_apple"
           target.build_configurations.each do |config|
             config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'BYPASS_PERMISSION_LOCATION_ALWAYS=1',]
@@ -302,7 +308,7 @@ end
 
 If you do want to receive updates when your App is in the background (or if you don't bypass the permission request as described above) then you'll need to:
 * Add the Background Modes capability to your XCode project (Project > Signing and Capabilities > "+ Capability" button) and select Location Updates. Be careful with this, you will need to explain in detail to Apple why your App needs this when submitting your App to the AppStore. If Apple isn't satisfied with the explanation your App will be rejected.
-* Add an `NSLocationAlwaysAndWhenInUseUsageDescription` entry to your Info.plist (use `NSLocationAlwaysUsageDescription` if you're targeting iOS <11.0) 
+* Add an `NSLocationAlwaysAndWhenInUseUsageDescription` entry to your Info.plist 
 
 When using the `requestTemporaryFullAccuracy({purposeKey: "YourPurposeKey"})` method, a dictionary should be added to the Info.plist file.
 ```xml
@@ -354,21 +360,23 @@ file created via EasyPlan.
 `Geolocator.checkIndoorPermission`. Request them with `Geolocator.requestLocationPermission``
 and `Geolocator.requestIndoorPermission` respectively.
 
-5. Call `Geolocator.getPositionStream` or `Geolocator.getCurrentPosition` for
-position updates.
+5. Call `Geolocator.getPositionStream` or `Geolocator.getCurrentPosition` with
+the `.bin` file and the site ID to receive position updates.
 
 
 ### Migration from geolocator
 1. Remove `geolocator` from the dependencies of your app by deleting it from the dependencies in your pubspec.yaml or by calling `flutter pub remove geolocator`
 
 2. Follow the steps from above ([Usage](#usage)). Pay attention to the [platform
-specific requirements](#platform-specific-requirements). .
+specific requirements](#platform-specific-requirements) and the required usage 
+of a `.bin` file and a site ID in `Geolocator.getPositionStream` and `Geoloactor.getCurrentPosition`.. 
 
 3. Replace the original imports of `package:geolocator/geolocator.dart` with `package:pinpoint_sdk/pinpoint_sdk.dart`
 
 4. If you are using the function `getServiceStatusStream`, pay attention that the type changed, more information [here](#service-status). 
 
 5. If you are using location settings with a distance filter: Make sure to convert it from meters to centimeters. Keep in mind that the function `getCurrentPosition` ignores any distance filter.
+
 
 
 ### Example
@@ -731,7 +739,7 @@ always | Permission to access the device's location or Bluetooth is allowed even
 
 > Note: Android can only return `whileInUse`, `always` or `denied` when checking permissions. Due to limitations on the Android OS it is not possible to determine if permissions are denied permanently when checking permissions. Using a workaround the geolocator is only able to do so as a result of the `requestPermission` method. More information can be found in geolocator's [wiki](https://github.com/Baseflow/flutter-geolocator/wiki/Breaking-changes-in-7.0.0#android-permission-update).
 
-### Device Settings
+### Location Settings
 
 In some cases it is necessary to ask the user and update their device settings. For example when the user initially permanently denied permissions to access the device's location or if the location services are not enabled (and, on Android, automatic resolution didn't work). In these cases you can use the `openAppSettings` or `openLocationSettings` methods to immediately redirect the user to the device's settings page. 
 
@@ -792,12 +800,15 @@ Logger('pinpoint_sdk').onRecord.listen(
 ### "I do not get any positions"
 - Make sure that you have enabled both Bluetooth and Location service.
 - Note that it might take up to 10 seconds before you receive the first position. 
-if you are using `getCurrentPosition`.
+- Do *not* use `asBroadcastStream()` for `Geolocator.getPositionStream()`. The stream is already a broadcast stream.  If you create a new stream with `asBroadcastStream()`, the stream will not be stopped when you cancel the last subscription to your stream, i.e. the site ID and `.bin` file will not be updated when you try to restart the stream. 
 - Make sure that your app has all the [necessary permissions](#setup-environment).
 - If you are using an external TRACElet, hold it close to your phone.
 - Check the [service status](#service-status) to see if your TRACElet disconnected. in that case, 
 cancel your subscriptions to the position stream. Notify your user to turn on 
-their TRACElet and then resubscribe to the stream. 
+their TRACElet and then resubscribe to the stream.
+
+### iOS: "The `Geolocator.getServiceStatus` shows that Bluetooth is disabled (or not available), but it is not"
+On iOS, the service status needs a short time until it is correctly initialized. You can introduce a short delay before first calling `Geolocator.getServiceStatus` or you can use the service status stream to listen to updates instead.
 
 
 ## License
