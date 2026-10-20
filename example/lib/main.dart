@@ -115,7 +115,7 @@ class _ExampleState extends State<Example> {
           children: [
             Image.asset('assets/Pin-Round-Orange@128px.png', height: 32),
             const SizedBox(width: 10),
-            const Text("Pinpoint Flutter SDK Example 15.0.5"),
+            const Text("Pinpoint Flutter SDK Example 15.0.6"),
           ],
         ),
       ),
@@ -398,10 +398,10 @@ class _ExampleState extends State<Example> {
       },
     );
 
-    if (result != null && result is FilePickerResult) {
-      _fileName = result.files.single.name;
-      if (result.files.single.path != null) {
-        _selectedBinFile = File(result.files.single.path!).readAsBytesSync();
+    if (result != null && result is PlatformFile) {
+      _fileName = result.name;
+      if (result.path != null) {
+        _selectedBinFile = File(result.path!).readAsBytesSync();
       }
     }
   }

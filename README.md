@@ -107,7 +107,7 @@ To be able to import the `pinpoint_sdk` package in your Flutter application, add
 ```yaml
 pinpoint_sdk: 
     hosted: https://posie.pinpoint.de:8073/repository/flutter_sdk_release
-    version: 15.0.5+5
+    version: 15.0.6+6
 ```
 
 
@@ -285,6 +285,10 @@ On iOS you'll need to add the following entry to your Info.plist file (located u
     <!-- legacy for iOS 12 and lower -->
     <key>NSBluetoothPeripheralUsageDescription</key>
     <string>This app needs Bluetooth to scan for and connect to Pinpoint Devices.</string>
+    <key>NSNearbyInteractionAllowOnceUsageDescription</key>
+    <string>Allow Nearby Interaction for native UWB support.</string>
+    <key>NSNearbyInteractionUsageDescription</key>
+    <string>Allow Nearby Interaction for native UWB support.</string>
 ```
 Add the following to the `ios/Podfile` of your application:
 ```

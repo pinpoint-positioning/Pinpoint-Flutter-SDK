@@ -130,7 +130,7 @@ class BinFileDialog extends StatefulWidget {
 class _BinFileDialogState extends State<BinFileDialog> {
   String? fileName;
 
-  FilePickerResult? filePickerResult;
+  PlatformFile? filePickerResult;
 
   late String message;
 
@@ -160,12 +160,11 @@ class _BinFileDialogState extends State<BinFileDialog> {
               ),
               IconButton(
                 onPressed: () async {
-                  final binFileResult = await FilePicker.platform.pickFiles(
+                  final binFileResult = await FilePicker.pickFile(
                     type: FileType.any,
-                    allowMultiple: false,
                   );
-                  if (binFileResult != null && binFileResult.files.isNotEmpty) {
-                    final path = binFileResult.files.single.path;
+                  if (binFileResult != null) {
+                    final path = binFileResult.path;
 
                     if (path != null) {
                       if (!path.endsWith('.bin')) {
@@ -174,7 +173,7 @@ class _BinFileDialogState extends State<BinFileDialog> {
                         });
                       } else {
                         setState(() {
-                          fileName = binFileResult.files.single.name;
+                          fileName = binFileResult.name;
                           filePickerResult = binFileResult;
                           message = '';
                         });
