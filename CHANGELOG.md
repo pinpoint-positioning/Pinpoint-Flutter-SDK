@@ -1,3 +1,6 @@
+## 15.0.7
+* Fixed permissions bug
+
 ## 15.0.6
 * Migrate Android plugin to built-in Kotlin.
 * Remove CocoaPods integration from example app

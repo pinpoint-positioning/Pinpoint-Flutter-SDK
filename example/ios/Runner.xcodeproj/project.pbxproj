@@ -396,7 +396,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.0.6;
+				MARKETING_VERSION = 15.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = de.pinpoint.flutterSdkExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -578,7 +578,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.0.6;
+				MARKETING_VERSION = 15.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = de.pinpoint.flutterSdkExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -603,7 +603,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.0.6;
+				MARKETING_VERSION = 15.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = de.pinpoint.flutterSdkExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
