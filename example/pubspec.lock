@@ -443,10 +443,10 @@ packages:
     dependency: "direct main"
     description:
       name: pinpoint_sdk
-      sha256: "321bc601c7ada74fd2f7bcaba5236621e17aeb9adb659b8dc373180088c3d8a1"
+      sha256: ddc81f0c865d0668ab823ba0d9bfd0aab41b06b921d1e69519b976252520d413
       url: "https://posie.pinpoint.de:8073/repository/flutter_sdk_release/"
     source: hosted
-    version: "15.0.7+7"
+    version: "15.0.7+8"
   platform:
     dependency: transitive
     description:
